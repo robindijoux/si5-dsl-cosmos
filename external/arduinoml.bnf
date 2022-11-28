@@ -1,0 +1,58 @@
+State:
+    'State' name=ID
+    '{'
+        'sensors'
+        '{'
+            Sensor ("," Sensor)*
+        '},'
+        'actuators'
+        '{'
+            Actuator ("," Actuator)*
+        '}'
+    '}'
+
+Sensor:
+    (Led | Buzzer) 
+
+Led:
+    'Led' name=ID
+    
+Buzzer:
+    'Buzzer' name=ID
+
+Actuator:
+    Button
+    
+Button:
+    'Button' name=ID 'transit to' State
+
+Signal:
+    'signal' high|low
+
+
+
+// Scenario 1
+
+State on
+{
+    sensors
+    {
+        Led 'led1' high, Buzzer 'buz1' high
+    },
+    actuators
+    {
+        Button but1 on signal high transit to state of
+    }
+}
+
+State of
+{
+    sensors
+    {
+        Led 'led1' low, Buzzer 'buz1' low
+    },
+    actuators
+    {
+        Button but1 on signal high transit to state of
+    }
+}

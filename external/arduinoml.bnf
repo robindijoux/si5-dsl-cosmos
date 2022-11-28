@@ -16,8 +16,10 @@ Sensor:
 
 Led:
     'Led' name=ID
+    
 Buzzer:
     'Buzzer' name=ID
+
 Actuator:
     Button
     
@@ -26,6 +28,8 @@ Button:
 
 Signal:
     'signal' high|low
+
+
 
 // Scenario 1
 
@@ -37,7 +41,7 @@ State on
     },
     actuators
     {
-        Button but1 transit to of
+        Button but1 on signal high transit to state of
     }
 }
 
@@ -45,10 +49,10 @@ State of
 {
     sensors
     {
-        Led 'led1', Buzzer 'buz1'
+        Led 'led1' low, Buzzer 'buz1' low
     },
     actuators
     {
-        Button but1 on Signal () transit to of
+        Button but1 on signal high transit to state of
     }
 }

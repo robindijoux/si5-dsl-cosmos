@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # build
-cd jvm
+cd kernel-jvm
 mvn clean install
 
 cd ../antlr

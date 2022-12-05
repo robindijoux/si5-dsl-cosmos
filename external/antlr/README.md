@@ -19,18 +19,15 @@ We consider here that the current directory is the `antlr` directory.
 
 1. Make sure the ArduinoML JVM kernel is installed in your local maven repository
 
-
-    * `cd ../jvm; mvn clean install`
+   - `cd ../jvm; mvn clean install`
 
 2. Then, compile the ANTLR code
 
-
-    * `mvn clean package`
+   - `mvn clean package`
 
 3. Run the compiler using the `exec` plugin:
 
-
-    * `mvn exec:java -Dexec.args="src/main/resources/red_button.arduinoml"`
+   - `mvn exec:java -Dexec.args="<path_to_your_scenario>"`
 
 ## Code Description
 

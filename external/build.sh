@@ -1,5 +1,8 @@
 #!/bin/sh
 
-java -jar antlr-4.11.1-complete.jar $1.g4
+# build
+cd kernel-jvm
+mvn clean install
 
-javac -cp ./antlr-4.11.1-complete.jar $1*.java
+cd ../antlr
+mvn clean package

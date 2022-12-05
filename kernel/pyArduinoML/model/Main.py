@@ -25,10 +25,6 @@ def demoScenario1():
 
 
 
-def demoScenario2():
-    
-
-
 
 def demoScenario3():
     button = Sensor("BUTTON", 9)

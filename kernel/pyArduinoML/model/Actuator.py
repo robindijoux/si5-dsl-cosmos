@@ -1,6 +1,6 @@
 __author__ = 'pascalpoizat'
 
-from pyArduinoML.model.Brick import Brick
+from kernel.pyArduinoML.model.Brick import Brick
 
 class Actuator(Brick):
     """

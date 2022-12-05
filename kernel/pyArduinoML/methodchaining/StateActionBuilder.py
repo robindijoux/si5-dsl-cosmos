@@ -1,7 +1,7 @@
 __author__ = 'pascalpoizat'
 
-from pyArduinoML.model.Action import Action
-from pyArduinoML.methodchaining.UndefinedBrick import UndefinedBrick
+from kernel.pyArduinoML.model.Action import Action
+from kernel.pyArduinoML.methodchaining.UndefinedBrick import UndefinedBrick
 
 
 class StateActionBuilder:

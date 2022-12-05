@@ -1,7 +1,7 @@
 __author__ = 'pascalpoizat'
 
-from pyArduinoML.model.NamedElement import NamedElement
-import SIGNAL
+from kernel.pyArduinoML.model.NamedElement import NamedElement
+from kernel.pyArduinoML.model import SIGNAL
 
 class State(NamedElement):
     """

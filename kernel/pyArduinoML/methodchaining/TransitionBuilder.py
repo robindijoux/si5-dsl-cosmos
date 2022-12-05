@@ -1,8 +1,8 @@
 __author__ = 'pascalpoizat'
 
-from pyArduinoML.model.Transition import Transition
-from pyArduinoML.methodchaining.UndefinedBrick import UndefinedBrick
-from pyArduinoML.methodchaining.UndefinedState import UndefinedState
+from kernel.pyArduinoML.model.Transition import Transition
+from kernel.pyArduinoML.methodchaining.UndefinedBrick import UndefinedBrick
+from kernel.pyArduinoML.methodchaining.UndefinedState import UndefinedState
 
 
 class TransitionBuilder:

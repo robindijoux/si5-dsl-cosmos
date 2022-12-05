@@ -1,3 +1,6 @@
 .DS_Store
 .antlr
 .idea
+*.class
+external/jvm/target/kernel-jvm-1.0.jar
+external/jvm/target/maven-archiver/pom.properties

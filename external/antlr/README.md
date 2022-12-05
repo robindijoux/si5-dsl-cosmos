@@ -1,41 +1,47 @@
 # ArduinoML ANTLR4 implementation
 
-  * Author: [Sebastien Mosser](mailto?mosser@i3s.unice.fr)
-  * Version: 1.0
+- Author: [Sebastien Mosser](mailto?mosser@i3s.unice.fr)
+- Version: 1.0
 
 This is a quick and dirty implementation of the ArduinoML kernel, using the Java language.
 
 ## Organization
 
-  * The `pom.xml` file models the directory as a Maven project. It triggers the ANTLR4 code generation plugin during 
-    the build phase to generate the Java code associated to the grammar. It also make possible to run the compiler
-    from the command line
-  * The `src/main/antlr4` directory contains the grammar (using java convention to implement packages as directories)
-  * The `src/main/java` directory contains the compiler code
-
+- The `pom.xml` file models the directory as a Maven project. It triggers the ANTLR4 code generation plugin during
+  the build phase to generate the Java code associated to the grammar. It also make possible to run the compiler
+  from the command line
+- The `src/main/antlr4` directory contains the grammar (using java convention to implement packages as directories)
+- The `src/main/java` directory contains the compiler code
 
 ## Running the example
 
-We consider here that the current directory is the `antlr` directory. 
+We consider here that the current directory is the `antlr` directory.
 
-  1. Make sure the ArduinoML JVM kernel is installed in your local maven repository
-    * `cd ../../kernels/jvm; mvn clean install`
-  2. Then, compile the ANTLR code
+1. Make sure the ArduinoML JVM kernel is installed in your local maven repository
+
+
+    * `cd ../jvm; mvn clean install`
+
+2. Then, compile the ANTLR code
+
+
     * `mvn clean package`
-  3. Run the compiler using the `exec` plugin:
+
+3. Run the compiler using the `exec` plugin:
+
+
     * `mvn exec:java -Dexec.args="src/main/resources/red_button.arduinoml"`
-    
+
 ## Code Description
 
 ### The G4 Grammar
 
 The grammar `ArduinoML.g4` defines two elements:
 
-  1. _Lexer_ rules that translates a stream of characters into legible tokens;
-  2. _Parser_ rules that translates a stream of tokens into abstract syntax tree nodes.
+1. _Lexer_ rules that translates a stream of characters into legible tokens;
+2. _Parser_ rules that translates a stream of tokens into abstract syntax tree nodes.
 
 In addition to these elements, we define at the end of the grammar some helper rules that will skip whitespaces or comments and give name such as `LOWERCASE` to regular expressions used elsewhere in the grammar.
-
 
 ### Implementing a Listener
 
@@ -52,4 +58,3 @@ First, we obtain a `CharStream` from the file to be used as input by the compile
 ### Importing in IntelliJ
 
 For the IntelliJ IDE, do not forget to right-click on the `antlr4` directory inside the `target` one (obtained after running the ANTLR tool on the g4 grammar) ans select _"mark directory as generated source root"_. It will allow IntelliJ to deal with the generated source easily.
-

@@ -1,9 +1,9 @@
 __author__ = 'pascalpoizat'
 
-from pyArduinoML.model.App import App
-from pyArduinoML.methodchaining.BrickBuilder import BrickBuilder
-from pyArduinoML.methodchaining.StateBuilder import StateBuilder
-from pyArduinoML.methodchaining.BrickBuilder import ACTUATOR, SENSOR
+from kernel.pyArduinoML.model.App import App
+from kernel.pyArduinoML.methodchaining.BrickBuilder import BrickBuilder
+from kernel.pyArduinoML.methodchaining.StateBuilder import StateBuilder
+from kernel.pyArduinoML.methodchaining.BrickBuilder import ACTUATOR, SENSOR
 
 
 class AppBuilder:

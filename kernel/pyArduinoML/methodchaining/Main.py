@@ -1,5 +1,8 @@
 __author__ = 'pascalpoizat'
 
+from kernel.pyArduinoML.methodchaining.AppBuilder import AppBuilder
+from kernel.pyArduinoML.model.SIGNAL import HIGH, LOW
+
 """
 DSL version of the demo application
 uses MethodChaining, nothing Python-specific
@@ -14,8 +17,7 @@ def demo1():
 
     :return:
     """
-    from pyArduinoML.methodchaining.AppBuilder import AppBuilder
-    from pyArduinoML.model.SIGNAL import HIGH, LOW
+
 
     app = AppBuilder("Switch!") \
         .sensor("BUTTON").on_pin(9) \
@@ -28,7 +30,7 @@ def demo1():
             .when("BUTTON").has_value(HIGH).go_to_state("off") \
         .get_contents()
 
-    print app
+    print(app)
 
 def demo2():
     """
@@ -38,9 +40,9 @@ def demo2():
 
     :return:
     """
-    from pyArduinoML.methodchaining.AppStringBuilder import AppStringBuilder
+    from kernel.pyArduinoML.methodchaining.AppStringBuilder import AppStringBuilder
 
-    app2 = AppStringBuilder("""
+    app2 = AppStringBuilder(
     AppBuilder("Switch!")
         .sensor("BUTTON").on_pin(9)
         .actuator("LED").on_pin(12)
@@ -50,10 +52,10 @@ def demo2():
         .state("on")
             .set("LED").to(HIGH)
             .when("BUTTON").has_value(HIGH).go_to_state("off")
-    """)
+    )
 
-    print app2
+    print(app2)
 
 if __name__ == '__main__':
     demo1()
-    demo2()
+    #demo2()

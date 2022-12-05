@@ -1,11 +1,11 @@
 __author__ = 'pascalpoizat'
 
-from pyArduinoML.model.State import State
-from pyArduinoML.model.Transition import Transition
-from pyArduinoML.methodchaining.TransitionBuilder import TransitionBuilder
-from pyArduinoML.methodchaining.StateActionBuilder import StateActionBuilder
-from pyArduinoML.methodchaining.UndefinedBrick import UndefinedBrick
-from pyArduinoML.methodchaining.UndefinedState import UndefinedState
+from kernel.pyArduinoML.model.State import State
+from kernel.pyArduinoML.model.Transition import Transition
+from kernel.pyArduinoML.methodchaining.TransitionBuilder import TransitionBuilder
+from kernel.pyArduinoML.methodchaining.StateActionBuilder import StateActionBuilder
+from kernel.pyArduinoML.methodchaining.UndefinedBrick import UndefinedBrick
+from kernel.pyArduinoML.methodchaining.UndefinedState import UndefinedState
 
 class StateBuilder:
     """

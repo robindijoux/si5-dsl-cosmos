@@ -1,7 +1,7 @@
 __author__ = 'pascalpoizat'
 
-from pyArduinoML.model.Actuator import Actuator
-from pyArduinoML.model.Sensor import Sensor
+from kernel.pyArduinoML.model.Actuator import Actuator
+from kernel.pyArduinoML.model.Sensor import Sensor
 
 ACTUATOR = 0
 SENSOR = 1

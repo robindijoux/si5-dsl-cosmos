@@ -1,17 +1,23 @@
 State:
     'State' ID
     '{'
-        'actuators'
+        'on enter'
         '{'
             Actuator ("," Actuator)*
         '}'
-    '}' Transition ("or" Transition)*
+    '}' Transition ('or' Transition)*
 
 Transition:
-    'transit to state ' state_id 'when' Sensor 'is' Signal ('and' Sensor 'is' Signal)* 
+    'transit to state ' state_id 'when' Sensor 'is' Signal ('and' Sensor 'is' Signal)*
+
+Brick:
+    (Actuator|Sensor) 'on' PIN 'with' Signal
 
 Actuator:
     (Led | Buzzer) ID
+
+Pin:
+    'pin' int
 
 Signal:
     'signal' ID
@@ -31,26 +37,23 @@ Button:
 
 // Scenario 1
 
+Led led1
+Buzzer buz1
+
+Button but1
+
 State on
 {
-    sensors
-    {
-        Led 'led1' high, Buzzer 'buz1' high
-    },
     actuators
     {
-        Button but1 on signal high transit to state of
-    }
+        Led 'led1' high, Buzzer 'buz1' high
+    }, transit to state of when but1 is 
 }
 
 State of
 {
-    sensors
+    sensor
     {
         Led 'led1' low, Buzzer 'buz1' low
-    },
-    actuators
-    {
-        Button but1 on signal high transit to state of
     }
 }

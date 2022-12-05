@@ -1,34 +1,32 @@
 State:
-    'State' name=ID
+    'State' ID
     '{'
-        'sensors'
-        '{'
-            Sensor ("," Sensor)*
-        '},'
         'actuators'
         '{'
             Actuator ("," Actuator)*
         '}'
-    '}'
+    '}' Transition ("or" Transition)*
 
-Sensor:
-    (Led | Buzzer) 
-
-Led:
-    'Led' name=ID
-    
-Buzzer:
-    'Buzzer' name=ID
+Transition:
+    'transit to state ' state_id 'when' Sensor 'is' Signal ('and' Sensor 'is' Signal)* 
 
 Actuator:
-    Button
-    
-Button:
-    'Button' name=ID 'transit to' State
+    (Led | Buzzer) ID
 
 Signal:
-    'signal' high|low
+    'signal' ID
 
+Led:
+    'Led'
+
+Buzzer:
+    'Buzzer'
+
+Sensor:
+    Button ID
+
+Button:
+    'Button'
 
 
 // Scenario 1

@@ -7,11 +7,11 @@ actuator buzzer: 12
 
 # Declaring states
 on {
-    led <= HIGH
+    buzzer <= HIGH
     buttonOne is HIGH and buttonTwo is HIGH => off
 }
 
 -> off {
-    led <= LOW
+    buzzer <= LOW
     buttonOne is HIGH and buttonTwo is HIGH => on
 }

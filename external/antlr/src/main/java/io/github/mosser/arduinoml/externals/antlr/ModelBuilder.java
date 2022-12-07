@@ -2,7 +2,6 @@ package io.github.mosser.arduinoml.externals.antlr;
 
 import io.github.mosser.arduinoml.externals.antlr.grammar.*;
 
-
 import io.github.mosser.arduinoml.kernel.App;
 import io.github.mosser.arduinoml.kernel.behavioral.Action;
 import io.github.mosser.arduinoml.kernel.behavioral.State;
@@ -13,6 +12,7 @@ import io.github.mosser.arduinoml.kernel.structural.Sensor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class ModelBuilder extends ArduinomlBaseListener {
 
@@ -24,7 +24,9 @@ public class ModelBuilder extends ArduinomlBaseListener {
     private boolean built = false;
 
     public App retrieve() {
-        if (built) { return theApp; }
+        if (built) {
+            return theApp;
+        }
         throw new RuntimeException("Cannot retrieve a model that was not created!");
     }
 
@@ -32,15 +34,14 @@ public class ModelBuilder extends ArduinomlBaseListener {
      ** Symbol tables **
      *******************/
 
-    private Map<String, Sensor>   sensors   = new HashMap<>();
+    private Map<String, Sensor> sensors = new HashMap<>();
     private Map<String, Actuator> actuators = new HashMap<>();
-    private Map<String, State>    states  = new HashMap<>();
-    private Map<String, Binding>  bindings  = new HashMap<>();
+    private Map<String, State> states = new HashMap<>();
+    private Map<String, Binding> bindings = new HashMap<>();
 
     private class Binding { // used to support state resolution for transitions
         String to; // name of the next state, as its instance might not have been compiled yet
-        Sensor trigger;
-        SIGNAL value;
+        Map<Sensor, SIGNAL> sensorsAndSignals = new HashMap<>();
     }
 
     private State currentState = null;
@@ -55,12 +56,15 @@ public class ModelBuilder extends ArduinomlBaseListener {
         theApp = new App();
     }
 
-    @Override public void exitRoot(ArduinomlParser.RootContext ctx) {
+    @Override
+    public void exitRoot(ArduinomlParser.RootContext ctx) {
         // Resolving states in transitions
-        bindings.forEach((key, binding) ->  {
+        bindings.forEach((key, binding) -> {
             Transition t = new Transition();
-            t.setSensor(binding.trigger);
-            t.setValue(binding.value);
+            Map<Sensor, SIGNAL> m = binding.sensorsAndSignals;
+            for (Entry<Sensor, SIGNAL> e : m.entrySet()) {
+                t.addSensorAndSignal(e.getKey(), e.getValue());
+            }
             t.setNext(states.get(binding.to));
             states.get(key).setTransition(t);
         });
@@ -116,9 +120,11 @@ public class ModelBuilder extends ArduinomlBaseListener {
     public void enterTransition(ArduinomlParser.TransitionContext ctx) {
         // Creating a placeholder as the next state might not have been compiled yet.
         Binding toBeResolvedLater = new Binding();
-        toBeResolvedLater.to      = ctx.next.getText();
-        toBeResolvedLater.trigger = sensors.get(ctx.trigger.getText());
-        toBeResolvedLater.value   = SIGNAL.valueOf(ctx.value.getText());
+        toBeResolvedLater.to = ctx.next.getText();
+        for (int i = 0; i < ctx.triggers.size(); i++) {
+            toBeResolvedLater.sensorsAndSignals.put(sensors.get(ctx.triggers.get(i).getText()),
+                    SIGNAL.valueOf(ctx.values.get(i).getText()));
+        }
         bindings.put(currentState.getName(), toBeResolvedLater);
     }
 
@@ -128,4 +134,3 @@ public class ModelBuilder extends ArduinomlBaseListener {
     }
 
 }
-

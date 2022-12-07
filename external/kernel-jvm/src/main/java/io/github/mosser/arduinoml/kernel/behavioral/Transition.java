@@ -1,5 +1,8 @@
 package io.github.mosser.arduinoml.kernel.behavioral;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.github.mosser.arduinoml.kernel.generator.Visitable;
 import io.github.mosser.arduinoml.kernel.generator.Visitor;
 import io.github.mosser.arduinoml.kernel.structural.*;
@@ -10,6 +13,15 @@ public class Transition implements Visitable {
 	private Sensor sensor;
 	private SIGNAL value;
 
+	private Map<Sensor, SIGNAL> sensorAndSignal = new HashMap<>();
+
+	public Map<Sensor, SIGNAL> getSensorAndSignal() {
+		return sensorAndSignal;
+	}
+
+	public void addSensorAndSignal(Sensor sensor, SIGNAL signal) {
+		this.sensorAndSignal.put(sensor, signal);
+	}
 
 	public State getNext() {
 		return next;
@@ -39,4 +51,5 @@ public class Transition implements Visitable {
 	public void accept(Visitor visitor) {
 		visitor.visit(this);
 	}
+
 }

@@ -15,11 +15,11 @@ import java.nio.file.Paths;
 
 public class Main {
 
-    public static void main (String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         System.out.println("\n\nRunning the ANTLR compiler for ArduinoML");
 
-        CharStream stream = getCharStream(args);
-        App theApp = buildModel(stream);
+        CharStream stream = getCharStream(args); // take the input file as charStream
+        App theApp = buildModel(stream); // build
         exportToCode(theApp);
 
     }
@@ -33,16 +33,16 @@ public class Main {
     }
 
     private static App buildModel(CharStream stream) {
-        ArduinomlLexer    lexer   = new ArduinomlLexer(stream);
+        ArduinomlLexer lexer = new ArduinomlLexer(stream);
         lexer.removeErrorListeners();
         lexer.addErrorListener(new StopErrorListener());
 
-        ArduinomlParser   parser  = new ArduinomlParser(new CommonTokenStream(lexer));
+        ArduinomlParser parser = new ArduinomlParser(new CommonTokenStream(lexer));
         parser.removeErrorListeners();
         parser.addErrorListener(new StopErrorListener());
 
-        ParseTreeWalker   walker  = new ParseTreeWalker();
-        ModelBuilder      builder = new ModelBuilder();
+        ParseTreeWalker walker = new ParseTreeWalker();
+        ModelBuilder builder = new ModelBuilder();
 
         walker.walk(builder, parser.root()); // parser.root() is the entry point of the grammar
 

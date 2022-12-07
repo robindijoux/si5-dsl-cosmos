@@ -1,4 +1,4 @@
-# Build .ino file from .inoml
+# Build .ino file from .adrduinoml
 
 First build everything by running
 
@@ -6,8 +6,8 @@ First build everything by running
 
 Then parse your file by running
 
-`./parse.sh <path_to_your_inoml_file>`
+`./parse.sh <path_to_your_adrduinoml_file>`
 
 For example
 
-`./parse.sh resource/red_button.inoml`
+`./parse.sh resources/scenario1.adrduinoml`

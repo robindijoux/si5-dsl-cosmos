@@ -11,7 +11,7 @@ public class State implements NamedElement, Visitable {
 
 	private String name;
 	private List<Action> actions = new ArrayList<Action>();
-	private List<Transition> transitions = new ArrayList<Transition>();
+	private Transition transition;
 	private Timer timer;
 
 	@Override
@@ -32,12 +32,12 @@ public class State implements NamedElement, Visitable {
 		this.actions = actions;
 	}
 
-	public List<Transition> getTransitions() {
-		return transitions;
+	public Transition getTransition() {
+		return transition;
 	}
 
-	public void addTransition(Transition transition) {
-		this.transitions.add(transition);
+	public void setTransition(Transition transition) {
+		this.transition = transition;
 	}
 
 	public Timer getTimer() {
@@ -52,4 +52,5 @@ public class State implements NamedElement, Visitable {
 	public void accept(Visitor visitor) {
 		visitor.visit(this);
 	}
+
 }

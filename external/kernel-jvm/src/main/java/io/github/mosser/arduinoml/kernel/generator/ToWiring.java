@@ -100,11 +100,8 @@ public class ToWiring extends Visitor<StringBuffer> {
 				action.accept(this);
 			}
 
-			if (state.getTransitions() != null) {
-				for (Transition t : state.getTransitions()) {
-					System.out.println("okok");
-					t.accept(this);
-				}
+			if (state.getTransition() != null) {
+				state.getTransition().accept(this);
 				w("\t\tbreak;\n");
 			}
 			return;
@@ -147,15 +144,14 @@ public class ToWiring extends Visitor<StringBuffer> {
 						sensorName, sensorName));
 			}
 			w("\t\t\tif( ");
-			if(transition.getOperator() == null){
+			if (transition.getOperator() == null) {
 				for (int i = 0; i < sensorsAndSignals.size(); i++) {
 					Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
 					String sensorName = e.getKey().getName();
 					w(String.format("digitalRead(%d) == %s && %sBounceGuard",
 							e.getKey().getPin(), e.getValue(), sensorName));
 				}
-			}
-			else {
+			} else {
 				if (transition.getOperator().equals("AND")) {
 					for (int i = 0; i < sensorsAndSignals.size(); i++) {
 						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);

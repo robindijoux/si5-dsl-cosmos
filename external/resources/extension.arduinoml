@@ -1,0 +1,25 @@
+# ArduinoML does not support temporal transitions, i.e., transitions that are 
+#   triggered a specific amount of time after entering in a state. 
+#   This extension will allow it. Of course, such extension implies support for 
+#   several output transitions from a single state.
+# Acceptance scenario: Alan wants to define a state machine where LED1 is switched 
+#   on after a push on button B1 and switched off 800ms after, waiting again 
+#   for a new push on B1.
+
+application temporaltransition
+
+# Declaring bricks
+sensor button: 9
+actuator led: 12
+
+# Declaring states
+on {
+    led <= HIGH
+    buttonOne is LOW and buttonTwo is LOW => off
+    after 2 ms => off
+}
+
+-> off {
+    led <= LOW
+    buttonOne is HIGH => on
+}

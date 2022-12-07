@@ -207,8 +207,6 @@ public class ToWiring extends Visitor<StringBuffer> {
 			return;
 		}
 		if (context.get("pass") == PASS.TWO) {
-			// w(String.format("\t\t\tdigitalWrite(%d,%s);\n",
-			// action.getActuator().getPin(), action.getValue()));
 			w(String.format("\t\t\tdelay(%d);\n", timer.getTimer()));
 			w(String.format("\t\t\tcurrentState = %s;\n", timer.getNext().getName()));
 			return;

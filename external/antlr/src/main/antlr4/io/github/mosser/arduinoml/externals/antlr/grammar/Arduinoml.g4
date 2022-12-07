@@ -15,7 +15,7 @@ bricks          :   (sensor|actuator)+;
     location    :   id=IDENTIFIER ':' port=PORT_NUMBER;
 
 states          :   state+;
-    state       :   initial? name=IDENTIFIER '{'  action+ transition? timer?'}';
+    state       :   initial? name=IDENTIFIER '{'  action+ (transition | timer) '}'; // only one transition xor one timer in a state
     action      :   receiver=IDENTIFIER '<=' value=SIGNAL;
     transition  :   triggers+=IDENTIFIER 'is' values+=SIGNAL  (operator = OPERATOR triggers+=IDENTIFIER 'is' values+=SIGNAL)* '=>' next=IDENTIFIER ;
     timer       :   'after' timerValue=TIMER_VALUE '=>' next=IDENTIFIER;

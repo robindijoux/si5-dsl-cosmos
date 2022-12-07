@@ -1,5 +1,8 @@
 application redButton
 
+# Pushing the button once switch the system in a mode where the LED is switched on.
+#   Pushing it again switches it off.
+
 # Declaring bricks
 sensor button: 9
 actuator led: 12

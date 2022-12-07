@@ -1,5 +1,9 @@
 application pushbutton
 
+# Pushing the button starts the buzz noise. Pushing it again stop the 
+#   buzzer and switch the LED on. Pushing it again switch the LED off, 
+#   and makes the system ready to make noise again after one push, and so on.
+
 # Declaring bricks
 sensor button: 9
 actuator led: 12

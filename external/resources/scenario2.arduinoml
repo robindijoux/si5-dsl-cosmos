@@ -1,5 +1,8 @@
 application redButton
 
+# It will trigger a buzzer if and only if two buttons are pushed at the 
+#   very same time. Releasing at least one of the button stop the sound.
+
 # Declaring bricks
 sensor buttonOne: 9
 sensor buttonTwo: 8

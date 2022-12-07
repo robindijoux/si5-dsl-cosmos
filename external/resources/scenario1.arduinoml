@@ -1,5 +1,8 @@
 application pushbutton
 
+# Pushing a button activates a LED and a buzzer. 
+#   Releasing the button switches the actuators off.
+
 # Declaring bricks
 sensor button: 9
 actuator led: 12

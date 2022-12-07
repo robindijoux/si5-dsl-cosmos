@@ -12,6 +12,7 @@ public class Transition implements Visitable {
 	private State next;
 	private Sensor sensor;
 	private SIGNAL value;
+	private String operator;
 
 	private Map<Sensor, SIGNAL> sensorAndSignal = new HashMap<>();
 
@@ -45,6 +46,14 @@ public class Transition implements Visitable {
 
 	public void setValue(SIGNAL value) {
 		this.value = value;
+	}
+
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 
 	@Override

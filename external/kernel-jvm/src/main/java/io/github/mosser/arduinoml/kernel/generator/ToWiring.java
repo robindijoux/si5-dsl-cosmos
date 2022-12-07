@@ -147,14 +147,36 @@ public class ToWiring extends Visitor<StringBuffer> {
 						sensorName, sensorName));
 			}
 			w("\t\t\tif( ");
-			for (int i = 0; i < sensorsAndSignals.size(); i++) {
-				Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
-				String sensorName = e.getKey().getName();
-				if (i > 0) {
-					w(" && ");
+			if(transition.getOperator() == null){
+				for (int i = 0; i < sensorsAndSignals.size(); i++) {
+					Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+					String sensorName = e.getKey().getName();
+					w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+							e.getKey().getPin(), e.getValue(), sensorName));
 				}
-				w(String.format("digitalRead(%d) == %s && %sBounceGuard",
-						e.getKey().getPin(), e.getValue(), sensorName));
+			}
+			else {
+				if (transition.getOperator().equals("AND")) {
+					for (int i = 0; i < sensorsAndSignals.size(); i++) {
+						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+						String sensorName = e.getKey().getName();
+						if (i > 0) {
+							w(" && ");
+						}
+						w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+								e.getKey().getPin(), e.getValue(), sensorName));
+					}
+				} else if (transition.getOperator().equals("OR")) {
+					for (int i = 0; i < sensorsAndSignals.size(); i++) {
+						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+						String sensorName = e.getKey().getName();
+						if (i > 0) {
+							w("||");
+						}
+						w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+								e.getKey().getPin(), e.getValue(), sensorName));
+					}
+				}
 			}
 			w(") {\n");
 			for (int i = 0; i < sensorsAndSignals.size(); i++) {

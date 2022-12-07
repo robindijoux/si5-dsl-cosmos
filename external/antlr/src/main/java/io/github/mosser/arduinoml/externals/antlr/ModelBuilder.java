@@ -1,5 +1,6 @@
 package io.github.mosser.arduinoml.externals.antlr;
 
+
 import io.github.mosser.arduinoml.externals.antlr.grammar.*;
 
 import io.github.mosser.arduinoml.kernel.App;
@@ -9,6 +10,7 @@ import io.github.mosser.arduinoml.kernel.behavioral.Transition;
 import io.github.mosser.arduinoml.kernel.structural.Actuator;
 import io.github.mosser.arduinoml.kernel.structural.SIGNAL;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
     private class Binding { // used to support state resolution for transitions
         String to; // name of the next state, as its instance might not have been compiled yet
         Map<Sensor, SIGNAL> sensorsAndSignals = new HashMap<>();
+        String operator;
     }
 
     private State currentState = null;
@@ -64,6 +67,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
             Map<Sensor, SIGNAL> m = binding.sensorsAndSignals;
             for (Entry<Sensor, SIGNAL> e : m.entrySet()) {
                 t.addSensorAndSignal(e.getKey(), e.getValue());
+                t.setOperator(binding.operator);
             }
             t.setNext(states.get(binding.to));
             states.get(key).setTransition(t);
@@ -98,6 +102,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
     public void enterState(ArduinomlParser.StateContext ctx) {
         State local = new State();
         local.setName(ctx.name.getText());
+
         this.currentState = local;
         this.states.put(local.getName(), local);
     }
@@ -120,6 +125,9 @@ public class ModelBuilder extends ArduinomlBaseListener {
     public void enterTransition(ArduinomlParser.TransitionContext ctx) {
         // Creating a placeholder as the next state might not have been compiled yet.
         Binding toBeResolvedLater = new Binding();
+        if(ctx.operator != null){
+            toBeResolvedLater.operator = ctx.operator.getText();
+        }
         toBeResolvedLater.to = ctx.next.getText();
         for (int i = 0; i < ctx.triggers.size(); i++) {
             toBeResolvedLater.sensorsAndSignals.put(sensors.get(ctx.triggers.get(i).getText()),

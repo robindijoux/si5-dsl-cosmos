@@ -104,6 +104,10 @@ public class ToWiring extends Visitor<StringBuffer> {
 				state.getTransition().accept(this);
 				w("\t\tbreak;\n");
 			}
+
+			if (state.getTimer() != null) {
+				state.getTimer().accept(this);
+			}
 			return;
 		}
 
@@ -206,6 +210,7 @@ public class ToWiring extends Visitor<StringBuffer> {
 			// w(String.format("\t\t\tdigitalWrite(%d,%s);\n",
 			// action.getActuator().getPin(), action.getValue()));
 			w(String.format("\t\t\tdelay(%d);\n", timer.getTimer()));
+			w(String.format("\t\t\tcurrentState = %s;\n", timer.getNext().getName()));
 			return;
 		}
 	}

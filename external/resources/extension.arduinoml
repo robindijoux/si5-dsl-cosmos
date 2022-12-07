@@ -15,11 +15,10 @@ actuator led: 12
 # Declaring states
 on {
     led <= HIGH
-    buttonOne is LOW AND buttonTwo is LOW => off
-    after 2 ms => off
+    after 800ms => off
 }
 
 -> off {
     led <= LOW
-    buttonOne is HIGH => on
+    button is HIGH => on
 }

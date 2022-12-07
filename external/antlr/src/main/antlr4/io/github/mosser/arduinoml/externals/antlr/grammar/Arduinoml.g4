@@ -15,21 +15,20 @@ bricks          :   (sensor|actuator)+;
     location    :   id=IDENTIFIER ':' port=PORT_NUMBER;
 
 states          :   state+;
-    state       :   initial? name=IDENTIFIER '{'  action+ transition+ timer?'}';
+    state       :   initial? name=IDENTIFIER '{'  action+ transition? timer?'}';
     action      :   receiver=IDENTIFIER '<=' value=SIGNAL;
     transition  :   triggers+=IDENTIFIER 'is' values+=SIGNAL  (operator = OPERATOR triggers+=IDENTIFIER 'is' values+=SIGNAL)* '=>' next=IDENTIFIER ;
-    timer       :   'after' timerValue=INT 'ms =>' next=IDENTIFIER;
+    timer       :   'after' timerValue=TIMER_VALUE '=>' next=IDENTIFIER;
     initial     :   '->';
 
 /*****************
  ** Lexer rules **
  *****************/
-
+TIMER_VALUE     :   ('0'..'9')* 'ms' ;
 PORT_NUMBER     :   DIGIT | '11' | '12';
 IDENTIFIER      :   LOWERCASE (LOWERCASE|UPPERCASE)+;
 SIGNAL          :   'HIGH' | 'LOW';
 OPERATOR        :   'AND' | 'OR';
-INT             : DIGIT+ ; // references the DIGIT helper rule
 
 /*************
  ** Helpers **

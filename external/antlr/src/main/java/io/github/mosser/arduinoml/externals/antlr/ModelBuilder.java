@@ -160,7 +160,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
         // TODO
         TimerBinding timerBinding = new TimerBinding();
         timerBinding.to = ctx.next.getText();
-        timerBinding.timerValue = Integer.parseInt(ctx.timerValue.getText());
+        timerBinding.timerValue = Integer.parseInt(ctx.timerValue.getText().split("ms")[0]);
         timerByState.put(currentState.getName(), timerBinding);
     }
 

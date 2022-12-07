@@ -17,10 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         System.out.println("\n\nRunning the ANTLR compiler for ArduinoML");
-        String[] test = new String[5];
-        test[0] = "external/resources/scenario4.arduinoml";
-        CharStream stream = getCharStream(test);
-     //   CharStream stream = getCharStream(args); // take the input file as charStream
+        CharStream stream = getCharStream(args); // take the input file as charStream
         App theApp = buildModel(stream); // build
         exportToCode(theApp);
 

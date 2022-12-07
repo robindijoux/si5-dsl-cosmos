@@ -10,11 +10,10 @@ import io.github.mosser.arduinoml.kernel.structural.*;
 public class Transition implements Visitable {
 
 	private State next;
-	private Sensor sensor;
-	private SIGNAL value;
-	private String operator;
 
 	private Map<Sensor, SIGNAL> sensorAndSignal = new HashMap<>();
+
+	private String operator;
 
 	public Map<Sensor, SIGNAL> getSensorAndSignal() {
 		return sensorAndSignal;
@@ -30,22 +29,6 @@ public class Transition implements Visitable {
 
 	public void setNext(State next) {
 		this.next = next;
-	}
-
-	public Sensor getSensor() {
-		return sensor;
-	}
-
-	public void setSensor(Sensor sensor) {
-		this.sensor = sensor;
-	}
-
-	public SIGNAL getValue() {
-		return value;
-	}
-
-	public void setValue(SIGNAL value) {
-		this.value = value;
 	}
 
 	public String getOperator() {

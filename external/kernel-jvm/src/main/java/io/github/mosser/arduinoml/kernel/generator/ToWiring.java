@@ -1,9 +1,6 @@
 package io.github.mosser.arduinoml.kernel.generator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import io.github.mosser.arduinoml.kernel.App;
@@ -103,8 +100,11 @@ public class ToWiring extends Visitor<StringBuffer> {
 				action.accept(this);
 			}
 
-			if (state.getTransition() != null) {
-				state.getTransition().accept(this);
+			if (state.getTransitions() != null) {
+				for (Transition t : state.getTransitions()) {
+					System.out.println("okok");
+					t.accept(this);
+				}
 				w("\t\tbreak;\n");
 			}
 			return;
@@ -197,6 +197,19 @@ public class ToWiring extends Visitor<StringBuffer> {
 		}
 		if (context.get("pass") == PASS.TWO) {
 			w(String.format("\t\t\tdigitalWrite(%d,%s);\n", action.getActuator().getPin(), action.getValue()));
+			return;
+		}
+	}
+
+	@Override
+	public void visit(Timer timer) {
+		if (context.get("pass") == PASS.ONE) {
+			return;
+		}
+		if (context.get("pass") == PASS.TWO) {
+			// w(String.format("\t\t\tdigitalWrite(%d,%s);\n",
+			// action.getActuator().getPin(), action.getValue()));
+			w(String.format("\t\t\tdelay(%d);\n", timer.getTimer()));
 			return;
 		}
 	}

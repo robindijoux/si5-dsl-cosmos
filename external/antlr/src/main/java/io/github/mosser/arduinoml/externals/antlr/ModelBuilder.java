@@ -1,18 +1,19 @@
 package io.github.mosser.arduinoml.externals.antlr;
 
-
 import io.github.mosser.arduinoml.externals.antlr.grammar.*;
 
 import io.github.mosser.arduinoml.kernel.App;
 import io.github.mosser.arduinoml.kernel.behavioral.Action;
 import io.github.mosser.arduinoml.kernel.behavioral.State;
+import io.github.mosser.arduinoml.kernel.behavioral.Timer;
 import io.github.mosser.arduinoml.kernel.behavioral.Transition;
 import io.github.mosser.arduinoml.kernel.structural.Actuator;
 import io.github.mosser.arduinoml.kernel.structural.SIGNAL;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -40,11 +41,17 @@ public class ModelBuilder extends ArduinomlBaseListener {
     private Map<String, Actuator> actuators = new HashMap<>();
     private Map<String, State> states = new HashMap<>();
     private Map<String, Binding> bindings = new HashMap<>();
+    private Map<String, TimerBinding> timerByState = new HashMap<>();
 
     private class Binding { // used to support state resolution for transitions
         String to; // name of the next state, as its instance might not have been compiled yet
         Map<Sensor, SIGNAL> sensorsAndSignals = new HashMap<>();
         String operator;
+    }
+
+    private class TimerBinding { // used to support timer
+        String to; // the next state
+        Integer timerValue; // the timer value to wait for before going to next state
     }
 
     private State currentState = null;
@@ -71,6 +78,13 @@ public class ModelBuilder extends ArduinomlBaseListener {
             }
             t.setNext(states.get(binding.to));
             states.get(key).setTransition(t);
+        });
+
+        timerByState.forEach((key, timerBinding) -> {
+            Timer t = new Timer();
+            t.setNext(states.get(timerBinding.to));
+            t.setTimer(timerBinding.timerValue);
+            states.get(key).setTimer(t);
         });
         this.built = true;
     }
@@ -125,7 +139,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
     public void enterTransition(ArduinomlParser.TransitionContext ctx) {
         // Creating a placeholder as the next state might not have been compiled yet.
         Binding toBeResolvedLater = new Binding();
-        if(ctx.operator != null){
+        if (ctx.operator != null) {
             toBeResolvedLater.operator = ctx.operator.getText();
         }
         toBeResolvedLater.to = ctx.next.getText();
@@ -139,6 +153,15 @@ public class ModelBuilder extends ArduinomlBaseListener {
     @Override
     public void enterInitial(ArduinomlParser.InitialContext ctx) {
         this.theApp.setInitial(this.currentState);
+    }
+
+    @Override
+    public void enterTimer(ArduinomlParser.TimerContext ctx) {
+        // TODO
+        TimerBinding timerBinding = new TimerBinding();
+        timerBinding.to = ctx.next.getText();
+        timerBinding.timerValue = Integer.parseInt(ctx.timerValue.getText());
+        timerByState.put(currentState.getName(), timerBinding);
     }
 
 }

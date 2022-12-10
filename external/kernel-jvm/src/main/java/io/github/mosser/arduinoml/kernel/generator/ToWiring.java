@@ -1,9 +1,6 @@
 package io.github.mosser.arduinoml.kernel.generator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import io.github.mosser.arduinoml.kernel.App;
@@ -107,6 +104,10 @@ public class ToWiring extends Visitor<StringBuffer> {
 				state.getTransition().accept(this);
 				w("\t\tbreak;\n");
 			}
+
+			if (state.getTimer() != null) {
+				state.getTimer().accept(this);
+			}
 			return;
 		}
 
@@ -147,14 +148,35 @@ public class ToWiring extends Visitor<StringBuffer> {
 						sensorName, sensorName));
 			}
 			w("\t\t\tif( ");
-			for (int i = 0; i < sensorsAndSignals.size(); i++) {
-				Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
-				String sensorName = e.getKey().getName();
-				if (i > 0) {
-					w(" && ");
+			if (transition.getOperator() == null) {
+				for (int i = 0; i < sensorsAndSignals.size(); i++) {
+					Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+					String sensorName = e.getKey().getName();
+					w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+							e.getKey().getPin(), e.getValue(), sensorName));
 				}
-				w(String.format("digitalRead(%d) == %s && %sBounceGuard",
-						e.getKey().getPin(), e.getValue(), sensorName));
+			} else {
+				if (transition.getOperator().equals("AND")) {
+					for (int i = 0; i < sensorsAndSignals.size(); i++) {
+						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+						String sensorName = e.getKey().getName();
+						if (i > 0) {
+							w(" && ");
+						}
+						w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+								e.getKey().getPin(), e.getValue(), sensorName));
+					}
+				} else if (transition.getOperator().equals("OR")) {
+					for (int i = 0; i < sensorsAndSignals.size(); i++) {
+						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+						String sensorName = e.getKey().getName();
+						if (i > 0) {
+							w("||");
+						}
+						w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+								e.getKey().getPin(), e.getValue(), sensorName));
+					}
+				}
 			}
 			w(") {\n");
 			for (int i = 0; i < sensorsAndSignals.size(); i++) {
@@ -175,6 +197,18 @@ public class ToWiring extends Visitor<StringBuffer> {
 		}
 		if (context.get("pass") == PASS.TWO) {
 			w(String.format("\t\t\tdigitalWrite(%d,%s);\n", action.getActuator().getPin(), action.getValue()));
+			return;
+		}
+	}
+
+	@Override
+	public void visit(Timer timer) {
+		if (context.get("pass") == PASS.ONE) {
+			return;
+		}
+		if (context.get("pass") == PASS.TWO) {
+			w(String.format("\t\t\tdelay(%d);\n", timer.getTimer()));
+			w(String.format("\t\t\tcurrentState = %s;\n", timer.getNext().getName()));
 			return;
 		}
 	}

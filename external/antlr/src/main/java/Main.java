@@ -17,7 +17,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         System.out.println("\n\nRunning the ANTLR compiler for ArduinoML");
-
         CharStream stream = getCharStream(args); // take the input file as charStream
         App theApp = buildModel(stream); // build
         exportToCode(theApp);
@@ -53,6 +52,7 @@ public class Main {
         Visitor codeGenerator = new ToWiring();
         theApp.accept(codeGenerator);
         System.out.println(codeGenerator.getResult());
+        // TODO
     }
 
 }

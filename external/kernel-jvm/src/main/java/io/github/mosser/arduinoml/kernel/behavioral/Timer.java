@@ -7,21 +7,10 @@ import io.github.mosser.arduinoml.kernel.generator.Visitable;
 import io.github.mosser.arduinoml.kernel.generator.Visitor;
 import io.github.mosser.arduinoml.kernel.structural.*;
 
-public class Transition implements Visitable {
+public class Timer implements Visitable {
 
 	private State next;
-
-	private Map<Sensor, SIGNAL> sensorAndSignal = new HashMap<>();
-
-	private String operator;
-
-	public Map<Sensor, SIGNAL> getSensorAndSignal() {
-		return sensorAndSignal;
-	}
-
-	public void addSensorAndSignal(Sensor sensor, SIGNAL signal) {
-		this.sensorAndSignal.put(sensor, signal);
-	}
+	private Integer timer;
 
 	public State getNext() {
 		return next;
@@ -31,12 +20,12 @@ public class Transition implements Visitable {
 		this.next = next;
 	}
 
-	public String getOperator() {
-		return operator;
+	public Integer getTimer() {
+		return timer;
 	}
 
-	public void setOperator(String operator) {
-		this.operator = operator;
+	public void setTimer(Integer timer) {
+		this.timer = timer;
 	}
 
 	@Override

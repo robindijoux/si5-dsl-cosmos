@@ -6,15 +6,15 @@ application redButton
 # Declaring bricks
 sensor buttonOne: 9
 sensor buttonTwo: 8
-actuator buzzer: 12
+actuator buzzer: 11
 
 # Declaring states
 on {
     buzzer <= HIGH
-    buttonOne is HIGH and buttonTwo is HIGH => off
+    buttonOne is LOW OR buttonTwo is LOW => off
 }
 
 -> off {
     buzzer <= LOW
-    buttonOne is HIGH and buttonTwo is HIGH => on
+    buttonOne is HIGH AND buttonTwo is HIGH => on
 }

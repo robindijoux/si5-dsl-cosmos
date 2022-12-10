@@ -1,5 +1,4 @@
 package io.github.mosser.arduinoml.externals.antlr;
-
 import io.github.mosser.arduinoml.externals.antlr.grammar.*;
 
 import io.github.mosser.arduinoml.kernel.App;

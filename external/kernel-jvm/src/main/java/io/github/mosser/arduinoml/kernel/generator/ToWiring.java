@@ -107,6 +107,7 @@ public class ToWiring extends Visitor<StringBuffer> {
 			if (state.getTransition() != null) {
 				for(Transition t : state.getTransition()){
 					t.accept(this);
+					w("\t\tbreak;\n");
 				}
 			}
 
@@ -242,8 +243,6 @@ public class ToWiring extends Visitor<StringBuffer> {
 			}
 
 		 */
-			w("\t\t\t\tcurrentState = " + transition.getNext().getName() + ";\n");
-			w("\t\t\t}\n");
 			return;
 		}
 	}

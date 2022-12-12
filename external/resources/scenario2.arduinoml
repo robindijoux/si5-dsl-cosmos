@@ -4,7 +4,7 @@ application redButton
 #   very same time. Releasing at least one of the button stop the sound.
 
 # Declaring bricks
-sensor buttonOne: 9
+sensor buttonOne: 8
 sensor buttonTwo: 8
 actuator buzzer: 11
 

@@ -25,6 +25,8 @@ public class ModelBuilder extends ArduinomlBaseListener {
     private App theApp = null;
     private boolean built = false;
 
+    private ErrorHandler errorHandler = new ErrorHandler();
+
     public App retrieve() {
         if (built) {
             return theApp;
@@ -93,11 +95,13 @@ public class ModelBuilder extends ArduinomlBaseListener {
         theApp.setName(ctx.name.getText());
     }
 
-    @Override
-    public void enterSensor(ArduinomlParser.SensorContext ctx) {
+  @Override
+    public void enterSensor(ArduinomlParser.SensorContext ctx) throws PinException {
         Sensor sensor = new Sensor();
         sensor.setName(ctx.location().id.getText());
-        sensor.setPin(Integer.parseInt(ctx.location().port.getText()));
+        int pin = Integer.parseInt(ctx.location().port.getText()) ;
+        errorHandler.checkPinDuplication(pin);
+        sensor.setPin(pin);
         this.theApp.getBricks().add(sensor);
         sensors.put(sensor.getName(), sensor);
     }

@@ -10,4 +10,4 @@ Then parse your file by running
 
 For example
 
-`./parse.sh resources/scenario1.adrduinoml`
+`./parse.sh resources/scenario1.arduinoml`

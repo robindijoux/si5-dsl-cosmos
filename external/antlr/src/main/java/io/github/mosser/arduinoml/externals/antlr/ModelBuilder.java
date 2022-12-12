@@ -96,7 +96,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
     }
 
   @Override
-    public void enterSensor(ArduinomlParser.SensorContext ctx) throws PinException {
+    public void enterSensor(ArduinomlParser.SensorContext ctx)  {
         Sensor sensor = new Sensor();
         sensor.setName(ctx.location().id.getText());
         int pin = Integer.parseInt(ctx.location().port.getText()) ;
@@ -110,7 +110,9 @@ public class ModelBuilder extends ArduinomlBaseListener {
     public void enterActuator(ArduinomlParser.ActuatorContext ctx) {
         Actuator actuator = new Actuator();
         actuator.setName(ctx.location().id.getText());
-        actuator.setPin(Integer.parseInt(ctx.location().port.getText()));
+        int pin = Integer.parseInt(ctx.location().port.getText()) ;
+        errorHandler.checkPinDuplication(pin);
+        actuator.setPin(pin);
         this.theApp.getBricks().add(actuator);
         actuators.put(actuator.getName(), actuator);
     }

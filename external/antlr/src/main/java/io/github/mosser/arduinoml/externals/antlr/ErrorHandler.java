@@ -12,7 +12,7 @@ public class ErrorHandler {
 
     void checkPinDuplication(int pin) throws PinException {
         if (usedPins.contains(pin)) {
-            throw new PinException(" \n pin : "+     pin+" already assigned! \n");
+            throw new PinException(" \n Check Pin Duplication : pin  "+     pin+" already assigned! \n");
         }
         else usedPins.add(pin);
     }

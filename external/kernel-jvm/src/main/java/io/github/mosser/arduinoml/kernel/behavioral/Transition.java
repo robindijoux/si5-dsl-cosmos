@@ -11,16 +11,26 @@ public class Transition implements Visitable {
 
 	private State next;
 
-	private Map<Sensor, SIGNAL> sensorAndSignal = new HashMap<>();
 
-	private OPERATOR operator;
+    Condition condition;
 
-	public Map<Sensor, SIGNAL> getSensorAndSignal() {
-		return sensorAndSignal;
+
+	public Transition() {
 	}
 
-	public void addSensorAndSignal(Sensor sensor, SIGNAL signal) {
-		this.sensorAndSignal.put(sensor, signal);
+
+	public Transition(State next, Condition condition) {
+		this.next = next;
+		this.condition = condition;
+	}
+
+
+	public Condition getCondition() {
+		return condition;
+	}
+
+	public void setCondition(Condition condition) {
+		this.condition = condition;
 	}
 
 	public State getNext() {
@@ -29,14 +39,6 @@ public class Transition implements Visitable {
 
 	public void setNext(State next) {
 		this.next = next;
-	}
-
-	public OPERATOR getOperator() {
-		return operator;
-	}
-
-	public void setOperator(OPERATOR operator) {
-		this.operator = operator;
 	}
 
 	@Override

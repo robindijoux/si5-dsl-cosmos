@@ -23,6 +23,10 @@ public abstract class Visitor<T> {
 
 	public abstract void visit(Sensor sensor);
 
+	public abstract void visit(AtomicCondition condition);
+
+	public abstract void visit(BinaryCondition condition);
+
 	/***********************
 	 ** Helper mechanisms **
 	 ***********************/

@@ -88,6 +88,10 @@ public class ToWiring extends Visitor<StringBuffer> {
 		}
 	}
 
+
+
+
+
 	@Override
 	public void visit(State state) {
 		if (context.get("pass") == PASS.ONE) {
@@ -101,8 +105,9 @@ public class ToWiring extends Visitor<StringBuffer> {
 			}
 
 			if (state.getTransition() != null) {
-				state.getTransition().accept(this);
-				w("\t\tbreak;\n");
+				for(Transition t : state.getTransition()){
+					t.accept(this);
+				}
 			}
 
 			if (state.getTimer() != null) {
@@ -132,6 +137,23 @@ public class ToWiring extends Visitor<StringBuffer> {
 	// }
 	// }
 
+	@Override
+	public void visit(AtomicCondition condition) {
+		w(String.format("\t\t\t%sBounceGuard = millis() - %sLastDebounceTime > debounce;\n",
+				condition.getSensor().getName(), condition.getSensor().getName()));
+		w("\t\t\tif( ");
+		w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+				condition.getSensor().getPin(), condition.getSignal().name(), condition.getSensor().getName()));
+		w(") {\n");
+		String sensorName = condition.getSensor().getName();
+		w(String.format("\t\t\t\t%sLastDebounceTime = millis();\n", sensorName));
+	}
+
+	@Override
+	public void visit(BinaryCondition condition) {
+
+	}
+	/*
 	@Override
 	public void visit(Transition transition) {
 		if (context.get("pass") == PASS.ONE) {
@@ -189,6 +211,48 @@ public class ToWiring extends Visitor<StringBuffer> {
 			return;
 		}
 	}
+	 */
+
+	@Override
+	public void visit(Transition transition) {
+		if (context.get("pass") == PASS.ONE) {
+			return;
+		}
+		if (context.get("pass") == PASS.TWO) {
+			transition.getCondition().accept(this);
+			w("\t\t\t\tcurrentState = " + transition.getNext().getName() + ";\n");
+			w("\t\t\t}\n");
+		/*		if (transition.getOperator()== OPERATOR.AND) {
+					for (int i = 0; i < sensorsAndSignals.size(); i++) {
+						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+						String sensorName = e.getKey().getName();
+						if (i > 0) {
+							w(" && ");
+						}
+						w(String.format("digitalRead(%d) == %s && %sBounceGuard",
+								e.getKey().getPin(), e.getValue(), sensorName));
+					}
+				}
+			}
+			w(") {\n");
+			for (int i = 0; i < sensorsAndSignals.size(); i++) {
+				Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
+				String sensorName = e.getKey().getName();
+				w(String.format("\t\t\t\t%sLastDebounceTime = millis();\n", sensorName));
+			}
+
+		 */
+			w("\t\t\t\tcurrentState = " + transition.getNext().getName() + ";\n");
+			w("\t\t\t}\n");
+			return;
+		}
+	}
+
+
+
+
+
+
 
 	@Override
 	public void visit(Action action) {

@@ -1,4 +1,5 @@
 import io.github.mosser.arduinoml.externals.antlr.ModelBuilder;
+
 import io.github.mosser.arduinoml.externals.antlr.StopErrorListener;
 import io.github.mosser.arduinoml.externals.antlr.grammar.*;
 import io.github.mosser.arduinoml.kernel.App;
@@ -17,12 +18,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         System.out.println("\n\nRunning the ANTLR compiler for ArduinoML");
-        CharStream stream = getCharStream(args);
-      /*  String[] test = new String[5];
-        test[0] = "external/resources/extension.arduinoml";
+     //   CharStream stream = getCharStream(args);
+        String[] test = new String[5];
+        test[0] = "external/resources/scenario1.arduinoml";
         CharStream stream = getCharStream(test);
         // take the input file as charStream
-       */
+
         App theApp = buildModel(stream); // build
         exportToCode(theApp);
     }

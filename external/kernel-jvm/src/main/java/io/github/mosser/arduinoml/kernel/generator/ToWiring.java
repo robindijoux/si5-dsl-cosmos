@@ -1,7 +1,10 @@
 package io.github.mosser.arduinoml.kernel.generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import io.github.mosser.arduinoml.kernel.App;
 import io.github.mosser.arduinoml.kernel.behavioral.*;
@@ -104,13 +107,34 @@ public class ToWiring extends Visitor<StringBuffer> {
 				action.accept(this);
 			}
 
-			if (state.getTransition() != null) {
-				for(Transition t : state.getTransition()){
-					t.accept(this);
-					w("\t\tbreak;\n");
-				}
-			}
+			if (!state.getTransition().isEmpty()) {
 
+					Set<String> sensors = state.getTransition().get(0).getCondition().getSensorName(new HashSet<>());
+					for(String sensorName : sensors){
+						w(String.format("\t\t\t%sBounceGuard = millis() - %sLastDebounceTime > debounce;\n",
+								sensorName, sensorName));
+					}
+
+				for(Transition t : state.getTransition()){
+					w("\t\t\tif( ");
+
+					t.accept(this);
+
+					w(") {\n");
+
+
+
+					for(String sensorName : sensors){
+						w(String.format("\t\t\t\t%sLastDebounceTime = millis();\n", sensorName));
+					}
+					w("\t\t\t\tcurrentState = " + state.getTransition().get(0).getNext().getName() + ";\n");
+					w("\t\t\t}\n");
+
+				}
+
+				w("\t\tbreak;\n");
+
+			}
 			if (state.getTimer() != null) {
 				state.getTimer().accept(this);
 			}
@@ -140,19 +164,16 @@ public class ToWiring extends Visitor<StringBuffer> {
 
 	@Override
 	public void visit(AtomicCondition condition) {
-		w(String.format("\t\t\t%sBounceGuard = millis() - %sLastDebounceTime > debounce;\n",
-				condition.getSensor().getName(), condition.getSensor().getName()));
-		w("\t\t\tif( ");
 		w(String.format("digitalRead(%d) == %s && %sBounceGuard",
 				condition.getSensor().getPin(), condition.getSignal().name(), condition.getSensor().getName()));
-		w(") {\n");
-		String sensorName = condition.getSensor().getName();
-		w(String.format("\t\t\t\t%sLastDebounceTime = millis();\n", sensorName));
+
 	}
 
 	@Override
 	public void visit(BinaryCondition condition) {
-
+       condition.getCond1().accept(this);
+		w(" && ");
+		condition.getCond2().accept(this);
 	}
 	/*
 	@Override
@@ -221,8 +242,7 @@ public class ToWiring extends Visitor<StringBuffer> {
 		}
 		if (context.get("pass") == PASS.TWO) {
 			transition.getCondition().accept(this);
-			w("\t\t\t\tcurrentState = " + transition.getNext().getName() + ";\n");
-			w("\t\t\t}\n");
+
 		/*		if (transition.getOperator()== OPERATOR.AND) {
 					for (int i = 0; i < sensorsAndSignals.size(); i++) {
 						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);

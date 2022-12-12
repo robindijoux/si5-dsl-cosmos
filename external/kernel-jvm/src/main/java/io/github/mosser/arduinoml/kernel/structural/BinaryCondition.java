@@ -3,6 +3,10 @@ package io.github.mosser.arduinoml.kernel.structural;
 import io.github.mosser.arduinoml.kernel.generator.Visitable;
 import io.github.mosser.arduinoml.kernel.generator.Visitor;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class BinaryCondition extends Condition   {
 
     OPERATOR operator;
@@ -46,7 +50,12 @@ public class BinaryCondition extends Condition   {
      visitor.visit(this);
     }
 
-
+    @Override
+    public Set<String> getSensorName(Set<String> sensors) {
+        sensors.addAll(cond1.getSensorName(new HashSet<>()));
+        sensors.addAll(cond2.getSensorName(new HashSet<>()));
+        return  sensors;
+    }
 
 
 }

@@ -156,7 +156,7 @@ public class ToWiring extends Visitor<StringBuffer> {
 							e.getKey().getPin(), e.getValue(), sensorName));
 				}
 			} else {
-				if (transition.getOperator().equals("AND")) {
+				if (transition.getOperator()== OPERATOR.AND) {
 					for (int i = 0; i < sensorsAndSignals.size(); i++) {
 						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
 						String sensorName = e.getKey().getName();
@@ -166,7 +166,7 @@ public class ToWiring extends Visitor<StringBuffer> {
 						w(String.format("digitalRead(%d) == %s && %sBounceGuard",
 								e.getKey().getPin(), e.getValue(), sensorName));
 					}
-				} else if (transition.getOperator().equals("OR")) {
+				} else if (transition.getOperator()== OPERATOR.OR) {
 					for (int i = 0; i < sensorsAndSignals.size(); i++) {
 						Entry<Sensor, SIGNAL> e = sensorsAndSignals.get(i);
 						String sensorName = e.getKey().getName();

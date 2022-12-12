@@ -13,7 +13,7 @@ public class Transition implements Visitable {
 
 	private Map<Sensor, SIGNAL> sensorAndSignal = new HashMap<>();
 
-	private String operator;
+	private OPERATOR operator;
 
 	public Map<Sensor, SIGNAL> getSensorAndSignal() {
 		return sensorAndSignal;
@@ -31,11 +31,11 @@ public class Transition implements Visitable {
 		this.next = next;
 	}
 
-	public String getOperator() {
+	public OPERATOR getOperator() {
 		return operator;
 	}
 
-	public void setOperator(String operator) {
+	public void setOperator(OPERATOR operator) {
 		this.operator = operator;
 	}
 

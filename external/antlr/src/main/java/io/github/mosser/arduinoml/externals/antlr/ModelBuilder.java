@@ -7,6 +7,7 @@ import io.github.mosser.arduinoml.kernel.behavioral.State;
 import io.github.mosser.arduinoml.kernel.behavioral.Timer;
 import io.github.mosser.arduinoml.kernel.behavioral.Transition;
 import io.github.mosser.arduinoml.kernel.structural.Actuator;
+import io.github.mosser.arduinoml.kernel.structural.OPERATOR;
 import io.github.mosser.arduinoml.kernel.structural.SIGNAL;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
 
@@ -75,7 +76,10 @@ public class ModelBuilder extends ArduinomlBaseListener {
             Map<Sensor, SIGNAL> m = binding.sensorsAndSignals;
             for (Entry<Sensor, SIGNAL> e : m.entrySet()) {
                 t.addSensorAndSignal(e.getKey(), e.getValue());
-                t.setOperator(binding.operator);
+                if(binding.operator != null){
+                    t.setOperator(OPERATOR.valueOf(binding.operator));
+                }
+
             }
             t.setNext(states.get(binding.to));
             states.get(key).setTransition(t);

@@ -14,7 +14,7 @@ on {
     buttonOne is LOW OR buttonTwo is LOW => off
 }
 
--> off {
+-> on {
     buzzer <= LOW
     buttonOne is HIGH AND buttonTwo is HIGH => on
 }

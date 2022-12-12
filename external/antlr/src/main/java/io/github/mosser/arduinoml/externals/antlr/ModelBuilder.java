@@ -1,6 +1,7 @@
 package io.github.mosser.arduinoml.externals.antlr;
 import io.github.mosser.arduinoml.externals.antlr.grammar.*;
 
+import io.github.mosser.arduinoml.externals.antlr.validation.ErrorHandler;
 import io.github.mosser.arduinoml.kernel.App;
 import io.github.mosser.arduinoml.kernel.behavioral.Action;
 import io.github.mosser.arduinoml.kernel.behavioral.State;
@@ -11,9 +12,7 @@ import io.github.mosser.arduinoml.kernel.structural.OPERATOR;
 import io.github.mosser.arduinoml.kernel.structural.SIGNAL;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -92,6 +91,8 @@ public class ModelBuilder extends ArduinomlBaseListener {
             states.get(key).setTimer(t);
         });
         this.built = true;
+
+        errorHandler.checkInitialState(theApp);
     }
 
     @Override
@@ -101,6 +102,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
 
   @Override
     public void enterSensor(ArduinomlParser.SensorContext ctx)  {
+        errorHandler.checkVariableDuplication(ctx.location().id.getText());
         Sensor sensor = new Sensor();
         sensor.setName(ctx.location().id.getText());
         int pin = Integer.parseInt(ctx.location().port.getText()) ;
@@ -112,6 +114,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
 
     @Override
     public void enterActuator(ArduinomlParser.ActuatorContext ctx) {
+        errorHandler.checkVariableDuplication(ctx.location().id.getText());
         Actuator actuator = new Actuator();
         actuator.setName(ctx.location().id.getText());
         int pin = Integer.parseInt(ctx.location().port.getText()) ;
@@ -123,6 +126,7 @@ public class ModelBuilder extends ArduinomlBaseListener {
 
     @Override
     public void enterState(ArduinomlParser.StateContext ctx) {
+        errorHandler.checkVariableDuplication(ctx.name.getText());
         State local = new State();
         local.setName(ctx.name.getText());
 
